@@ -1,7 +1,7 @@
 package ru.plants.care.back.services;
 
-import ru.plants.care.back.dto.PlantTypeDTO;
-import ru.plants.care.back.dto.PlantTypeListRecordDTO;
+import ru.plants.care.back.dto.planttype.PlantTypeDTO;
+import ru.plants.care.back.dto.planttype.PlantTypeListRecordDTO;
 
 import java.util.List;
 

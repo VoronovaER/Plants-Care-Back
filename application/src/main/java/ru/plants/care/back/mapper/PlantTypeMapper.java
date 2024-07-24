@@ -2,8 +2,8 @@ package ru.plants.care.back.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import ru.plants.care.back.dto.PlantTypeDTO;
-import ru.plants.care.back.dto.PlantTypeListRecordDTO;
+import ru.plants.care.back.dto.planttype.PlantTypeDTO;
+import ru.plants.care.back.dto.planttype.PlantTypeListRecordDTO;
 import ru.plants.care.back.repository.model.PlantTypeEntity;
 
 import java.util.List;

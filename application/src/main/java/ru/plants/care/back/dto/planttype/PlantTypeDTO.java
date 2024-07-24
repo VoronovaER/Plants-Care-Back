@@ -1,4 +1,4 @@
-package ru.plants.care.back.dto;
+package ru.plants.care.back.dto.planttype;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

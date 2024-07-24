@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.plants.care.back.dto.PlantTypeDTO;
-import ru.plants.care.back.dto.PlantTypeListRecordDTO;
+import ru.plants.care.back.dto.planttype.PlantTypeDTO;
+import ru.plants.care.back.dto.planttype.PlantTypeListRecordDTO;
 import ru.plants.care.back.services.PlantTypeService;
 
 import java.util.List;

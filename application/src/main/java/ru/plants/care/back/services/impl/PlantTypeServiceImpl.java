@@ -2,8 +2,8 @@ package ru.plants.care.back.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.plants.care.back.dto.PlantTypeDTO;
-import ru.plants.care.back.dto.PlantTypeListRecordDTO;
+import ru.plants.care.back.dto.planttype.PlantTypeDTO;
+import ru.plants.care.back.dto.planttype.PlantTypeListRecordDTO;
 import ru.plants.care.back.mapper.PlantTypeMapper;
 import ru.plants.care.back.repository.PlantTypeRepository;
 import ru.plants.care.back.services.PlantTypeService;
