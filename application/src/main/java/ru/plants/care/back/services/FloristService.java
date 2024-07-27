@@ -9,5 +9,4 @@ public interface FloristService {
     BaseFloristDTO saveFlorist(BaseFloristDTO florist);
     List<FloristDTO> getFloristList();
     void deleteFlorist(Long id);
-    BaseFloristDTO updateFlorist(Long id, BaseFloristDTO floristDTO);
 }

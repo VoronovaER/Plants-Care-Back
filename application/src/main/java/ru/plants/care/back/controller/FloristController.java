@@ -41,13 +41,4 @@ public class FloristController {
     ) {
         service.deleteFlorist(id);
     }
-
-    @Operation(summary = "Изменение данных флориста")
-    @PutMapping(path = "/florist/{floristId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public BaseFloristDTO updateFlorist(
-            @PathVariable Long floristId,
-            @RequestBody BaseFloristDTO florist
-    ) {
-        return service.updateFlorist(floristId, florist);
-    }
 }

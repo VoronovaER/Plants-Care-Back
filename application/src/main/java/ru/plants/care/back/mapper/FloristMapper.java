@@ -15,6 +15,4 @@ public interface FloristMapper {
     List<FloristDTO> floristEntityToFloristDto(List<FloristEntity> floristList);
 
     FloristEntity baseFloristDtoToFloristEntity(BaseFloristDTO florist);
-
-    void updateFloristEntity(BaseFloristDTO floristDTO, @MappingTarget FloristEntity floristEntity);
 }
