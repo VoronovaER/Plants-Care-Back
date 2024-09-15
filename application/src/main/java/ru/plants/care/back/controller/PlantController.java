@@ -37,6 +37,23 @@ public class PlantController {
         return service.createPlant(newPlant);
     }
 
+    @Operation(summary = "Изменение данных растения")
+    @PutMapping(path = "/item/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public PlantDTO updatePlant(
+            @PathVariable Long id,
+            @RequestBody BasePlantDTO plant
+    ) {
+        return service.updatePlant(id, plant);
+    }
+
+    @Operation(summary = "Получение данных растения")
+    @GetMapping(path = "/item/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PlantDTO getPlant(
+            @PathVariable Long id
+    ) {
+        return service.getPlant(id);
+    }
+
     @Operation(summary = "Удаление растения")
     @DeleteMapping(path = "/item/{id}")
     public void deletePlant(

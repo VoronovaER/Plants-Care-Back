@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.plants.care.back.dto.plant.BasePlantDTO;
+import ru.plants.care.back.dto.plant.PlantDTO;
 import ru.plants.care.back.dto.planttype.PlantTypeDTO;
 import ru.plants.care.back.dto.planttype.PlantTypeListRecordDTO;
 import ru.plants.care.back.services.PlantTypeService;
@@ -40,5 +42,20 @@ public class PlantTypeController {
             @RequestParam Long id
     ) {
         plantTypeService.deletePlantType(id);
+    }
+
+    @Operation(summary = "Изменение данных типа растения")
+    @PutMapping(path = "/types/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public PlantTypeDTO updatePlantType(
+            @PathVariable Long id,
+            @RequestBody PlantTypeDTO plant
+    ) {
+        return plantTypeService.updatePlantType(id, plant);
+    }
+
+    @Operation(summary = "Получение информации о типе растения")
+    @GetMapping(path = "/types/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PlantTypeDTO getPlantType(@PathVariable Long id) {
+        return plantTypeService.getPlantType(id);
     }
 }

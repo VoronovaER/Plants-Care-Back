@@ -2,8 +2,10 @@ package ru.plants.care.back.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.plants.care.back.dto.planttype.BasePlantTypeDTO;
 import ru.plants.care.back.dto.planttype.PlantTypeDTO;
 import ru.plants.care.back.dto.planttype.PlantTypeListRecordDTO;
+import ru.plants.care.back.exception.ItemNotFoundException;
 import ru.plants.care.back.mapper.PlantTypeMapper;
 import ru.plants.care.back.repository.PlantTypeRepository;
 import ru.plants.care.back.services.PlantTypeService;
@@ -32,4 +34,22 @@ public class PlantTypeServiceImpl implements PlantTypeService {
         plantTypeRepository.deleteById(id);
     }
 
+    @Override
+    public PlantTypeDTO updatePlantType(Long id, PlantTypeDTO plant) {
+        var plantTypeEntity = plantTypeRepository.findById(id);
+        if (plantTypeEntity.isEmpty()) {
+            throw new ItemNotFoundException("Plant not found: " + id);
+        }
+        plantTypeMapper.updatePlantTypeEntity(plant, plantTypeEntity.get());
+        return plantTypeMapper.plantTypeEntityToPlantTypeDTO(plantTypeRepository.save(plantTypeEntity.get()));
+    }
+
+    @Override
+    public PlantTypeDTO getPlantType(Long id) {
+        var plantTypeEntity = plantTypeRepository.findById(id);
+        if (plantTypeEntity.isEmpty()) {
+            throw new ItemNotFoundException("Plant not found: " + id);
+        }
+        return plantTypeMapper.plantTypeEntityToPlantTypeDTO(plantTypeEntity.get());
+    }
 }

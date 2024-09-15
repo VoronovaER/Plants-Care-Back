@@ -54,6 +54,28 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
+    public PlantDTO updatePlant(Long id, BasePlantDTO plant) {
+        var plantEntity = repository.findById(id);
+        if (plantEntity.isEmpty()) {
+            throw new ItemNotFoundException("Plant not found: " + id);
+        }
+        plantEntity.get().setFlorists(plantEntity.get().getFlorists());
+
+        mapper.updatePlantEntity(plant, plantEntity.get());
+        return mapper.plantEntityToPlantDTO(plantRepository.save(plantEntity.get()));
+    }
+
+    @Override
+    public PlantDTO getPlant(Long id) {
+        var plantEntity = repository.findById(id);
+        if (plantEntity.isEmpty()) {
+            throw new ItemNotFoundException("Plant not found: " + id);
+        }
+
+        return mapper.plantEntityToPlantDTO(plantEntity.get());
+    }
+
+    @Override
     public void deletePlant(Long id) {
         repository.deleteById(id);
     }

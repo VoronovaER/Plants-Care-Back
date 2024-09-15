@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.plants.care.back.dto.florist.BaseFloristDTO;
 import ru.plants.care.back.dto.florist.FloristDTO;
+import ru.plants.care.back.dto.plant.PlantListRecordDTO;
 import ru.plants.care.back.services.FloristService;
 
 import java.util.List;
@@ -40,5 +41,29 @@ public class FloristController {
             @RequestParam Long id
     ) {
         service.deleteFlorist(id);
+    }
+
+    @Operation(summary = "Добавление растения к флористу")
+    @PutMapping(path = "/florist/{floristId}/plant/{plantId}")
+    public void addPlant(
+            @PathVariable Long floristId,
+            @PathVariable Long plantId) {
+        service.addPlant(floristId, plantId);
+    }
+
+    @Operation(summary = "Изменение данных флориста")
+    @PutMapping(path = "/florist/{floristId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public BaseFloristDTO updateFlorist(
+            @PathVariable Long floristId,
+            @RequestBody BaseFloristDTO florist
+    ) {
+        return service.updateFlorist(floristId, florist);
+    }
+    @Operation(summary  =  "Получение списка растений в флориста")
+    @GetMapping(path  =  "/florist/{floristId}/plant", produces  = MediaType.APPLICATION_JSON_VALUE)
+    public List<PlantListRecordDTO> getPlantList(
+            @PathVariable Long floristId
+    ) {
+        return service.getFloristPlants(floristId);
     }
 }

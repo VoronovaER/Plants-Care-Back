@@ -1,5 +1,8 @@
 package ru.plants.care.back.services;
 
+import ru.plants.care.back.dto.plant.BasePlantDTO;
+import ru.plants.care.back.dto.plant.PlantDTO;
+import ru.plants.care.back.dto.planttype.BasePlantTypeDTO;
 import ru.plants.care.back.dto.planttype.PlantTypeDTO;
 import ru.plants.care.back.dto.planttype.PlantTypeListRecordDTO;
 
@@ -9,4 +12,6 @@ public interface PlantTypeService {
     List<PlantTypeListRecordDTO> getPlantTypeList();
     PlantTypeDTO savePlantType(PlantTypeDTO plantType);
     void deletePlantType(Long id);
+    PlantTypeDTO updatePlantType(Long id, PlantTypeDTO plant);
+    PlantTypeDTO getPlantType(Long id);
 }

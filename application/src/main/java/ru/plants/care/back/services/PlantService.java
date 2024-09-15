@@ -10,5 +10,7 @@ import java.util.List;
 public interface PlantService {
     List<PlantListRecordDTO> getPlantList();
     PlantDTO createPlant(NewPlantRequestDTO plant);
+    PlantDTO updatePlant(Long id, BasePlantDTO plant);
+    PlantDTO getPlant(Long id);
     void deletePlant(Long id);
 }

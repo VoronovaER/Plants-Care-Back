@@ -25,4 +25,6 @@ public interface PlantMapper {
     PlantDTO plantEntityToPlantDTO(PlantEntity entity);
 
     PlantEntity newPlantDTOToListPlantEntity(NewPlantRequestDTO value);
+
+    void updatePlantEntity(BasePlantDTO plant, @MappingTarget PlantEntity entity);
 }

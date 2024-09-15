@@ -14,4 +14,5 @@ import lombok.EqualsAndHashCode;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FloristDTO extends BaseFloristDTO {
     private Long id;
+    private int plantsQuantity;
 }
