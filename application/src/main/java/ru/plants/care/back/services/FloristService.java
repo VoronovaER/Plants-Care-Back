@@ -13,4 +13,5 @@ public interface FloristService {
     void addPlant(Long floristId, Long plantId);
     BaseFloristDTO updateFlorist(Long id, BaseFloristDTO floristDTO);
     List<PlantListRecordDTO> getFloristPlants(Long id);
+    FloristDTO getFlorist(Long id);
 }

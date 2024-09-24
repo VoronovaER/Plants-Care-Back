@@ -66,4 +66,10 @@ public class FloristController {
     ) {
         return service.getFloristPlants(floristId);
     }
+
+    @Operation(summary = "Получение информации о флористе")
+    @GetMapping(path = "/florist/{floristId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public FloristDTO getFlorist(@PathVariable Long floristId){
+        return service.getFlorist(floristId);
+    }
 }

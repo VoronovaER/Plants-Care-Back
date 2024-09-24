@@ -82,4 +82,13 @@ public class FloristServiceImpl implements FloristService {
         }
         return plantMapper.plantEntityToListPlantDTO(floristEntity.get().getPlants());
     }
+
+    @Override
+    public FloristDTO getFlorist(Long id) {
+        var floristEntity = floristRepository.findById(id);
+        if (floristEntity.isEmpty()) {
+            throw new ItemNotFoundException("Florist not found: " + id);
+        }
+        return mapper.floristEntityToFloristDto(floristEntity.get());
+    }
 }
