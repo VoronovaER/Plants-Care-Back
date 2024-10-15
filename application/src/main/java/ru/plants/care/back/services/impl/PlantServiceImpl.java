@@ -1,5 +1,6 @@
 package ru.plants.care.back.services.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +13,7 @@ import ru.plants.care.back.mapper.PlantMapper;
 import ru.plants.care.back.repository.FloristRepository;
 import ru.plants.care.back.repository.PlantRepository;
 import ru.plants.care.back.repository.PlantTypeRepository;
+import ru.plants.care.back.repository.model.FloristEntity;
 import ru.plants.care.back.services.PlantService;
 
 import java.util.List;
@@ -31,11 +33,13 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
+    @Transactional
     public PlantDTO createPlant(@Validated NewPlantRequestDTO plant) {
-        var floristEntity = floristRepository.findById(plant.getFloristId());
-        if (floristEntity.isEmpty()) {
+        var floristEntityOpt = floristRepository.findById(plant.getFloristId());
+        if (floristEntityOpt.isEmpty()) {
             throw new ItemNotFoundException("Florist not found: " + plant.getFloristId());
         }
+        var florist = floristEntityOpt.get();
 
         var plantTypeEntity = plantTypeRepository.findById(plant.getPlantTypeId());
         if (plantTypeEntity.isEmpty()) {
@@ -44,13 +48,17 @@ public class PlantServiceImpl implements PlantService {
 
         var plantEntity = mapper.newPlantDTOToListPlantEntity(plant);
         plantEntity.setPlantType(plantTypeEntity.get());
+        plantEntity = repository.saveAndFlush(plantEntity);
+
+        florist.getPlants().add(plantEntity);
+
         if (plantEntity.getFlorists() == null) {
-            plantEntity.setFlorists(List.of(floristEntity.get()));
+            plantEntity.setFlorists(List.of(florist));
         } else {
-            plantEntity.getFlorists().add(floristEntity.get());
+            plantEntity.getFlorists().add(florist);
         }
 
-        return mapper.plantEntityToPlantDTO(plantRepository.save(plantEntity));
+        return mapper.plantEntityToPlantDTO(plantEntity);
     }
 
     @Override
@@ -77,6 +85,15 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public void deletePlant(Long id) {
-        repository.deleteById(id);
+        var plantEntity = repository.findById(id);
+        if (plantEntity.isEmpty()) {
+            throw new ItemNotFoundException("Plant not found: " + id);
+        }else{
+            List<FloristEntity> florists = plantEntity.get().getFlorists();
+            for (FloristEntity florist : florists) {
+                florist.getPlants().remove(plantEntity.get());
+            }
+            repository.deleteById(id);
+        }
     }
 }
