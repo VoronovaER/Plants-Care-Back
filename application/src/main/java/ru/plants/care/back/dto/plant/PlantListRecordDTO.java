@@ -15,4 +15,5 @@ import lombok.experimental.SuperBuilder;
 public class PlantListRecordDTO extends BasePlantDTO {
     private Long id;
     private String plantType;
+    private Long plantTypeId;
 }

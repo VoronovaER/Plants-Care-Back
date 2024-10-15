@@ -20,6 +20,8 @@ public interface PlantMapper {
     List<PlantListRecordDTO> plantEntityToListPlantDTO(List<PlantEntity> plantList);
 
     @Mapping(source = "plantType.name", target = "plantType")
+    @Mapping(source = "plantType.id", target = "plantTypeId")
+    @Mapping(source = "plantType.url", target = "url")
     PlantListRecordDTO plantEntityToPlantListRecordDTO(PlantEntity entity);
 
     PlantDTO plantEntityToPlantDTO(PlantEntity entity);
