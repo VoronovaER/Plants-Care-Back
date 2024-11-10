@@ -1,6 +1,7 @@
 package ru.plants.care.back.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import ru.plants.care.back.dto.task.NewTaskDTO;
 import ru.plants.care.back.dto.task.TaskDTO;
@@ -18,4 +19,7 @@ public interface TaskMapper {
     TaskDTO taskEntityToTaskDTO(TaskEntity taskEntity);
 
     List<TaskListRecordDTO> taskEntityToTaskListRecordDTO(List<TaskEntity> all);
+    @Mapping(source = "taskEntity.plant.name", target = "plantName")
+    @Mapping(source = "taskEntity.plant.plantType", target = "plantTypeName")
+    TaskListRecordDTO taskEntityToTaskListRecordDTO(TaskEntity taskEntity);
 }

@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EqualsAndHashCode(callSuper = true)
 @Data
-@SuperBuilder
+//@SuperBuilder
 public class TaskListRecordDTO extends BaseTaskDTO {
     private Long id;
     private String plantTypeName;

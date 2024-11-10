@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "florist", indexes = {
-        @Index(name = "florist_idx1", columnList = "email")
+        @Index(name = "florist_idx1", columnList = "email", unique = true)
 })
 public class FloristEntity {
     @Id
@@ -32,4 +32,5 @@ public class FloristEntity {
 
     @Column(unique = true)
     private String email;
+    private String password;
 }

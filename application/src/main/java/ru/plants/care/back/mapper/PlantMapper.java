@@ -9,6 +9,7 @@ import ru.plants.care.back.dto.plant.NewPlantRequestDTO;
 import ru.plants.care.back.dto.plant.PlantDTO;
 import ru.plants.care.back.dto.plant.PlantListRecordDTO;
 import ru.plants.care.back.repository.model.PlantEntity;
+import ru.plants.care.back.repository.model.PlantTypeEntity;
 
 import java.util.List;
 
@@ -29,4 +30,8 @@ public interface PlantMapper {
     PlantEntity newPlantDTOToListPlantEntity(NewPlantRequestDTO value);
 
     void updatePlantEntity(BasePlantDTO plant, @MappingTarget PlantEntity entity);
+
+    default String plantTypeToString(PlantTypeEntity plantType) {
+        return plantType.getName();
+    }
 }

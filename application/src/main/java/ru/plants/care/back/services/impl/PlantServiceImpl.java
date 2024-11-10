@@ -8,8 +8,10 @@ import ru.plants.care.back.dto.plant.BasePlantDTO;
 import ru.plants.care.back.dto.plant.NewPlantRequestDTO;
 import ru.plants.care.back.dto.plant.PlantDTO;
 import ru.plants.care.back.dto.plant.PlantListRecordDTO;
+import ru.plants.care.back.dto.task.TaskListRecordDTO;
 import ru.plants.care.back.exception.ItemNotFoundException;
 import ru.plants.care.back.mapper.PlantMapper;
+import ru.plants.care.back.mapper.TaskMapper;
 import ru.plants.care.back.repository.FloristRepository;
 import ru.plants.care.back.repository.PlantRepository;
 import ru.plants.care.back.repository.PlantTypeRepository;
@@ -26,6 +28,7 @@ public class PlantServiceImpl implements PlantService {
     private final FloristRepository floristRepository;
     private final PlantTypeRepository plantTypeRepository;
     private final PlantRepository plantRepository;
+    private final TaskMapper taskMapper;
 
     @Override
     public List<PlantListRecordDTO> getPlantList() {
@@ -95,5 +98,14 @@ public class PlantServiceImpl implements PlantService {
             }
             repository.deleteById(id);
         }
+    }
+
+    @Override
+    public List<TaskListRecordDTO> getTaskList(Long id) {
+        var plantEntity = repository.findById(id);
+        if (plantEntity.isEmpty()) {
+            throw new ItemNotFoundException("Plant not found: " + id);
+        }
+        return taskMapper.taskEntityToTaskListRecordDTO(plantEntity.get().getTasks());
     }
 }

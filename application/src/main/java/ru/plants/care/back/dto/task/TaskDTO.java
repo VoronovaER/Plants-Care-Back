@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@SuperBuilder
+//@SuperBuilder
 @NoArgsConstructor
 public class TaskDTO extends BaseTaskDTO {
     private Long id;

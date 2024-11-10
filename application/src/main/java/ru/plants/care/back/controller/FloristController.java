@@ -1,5 +1,6 @@
 package ru.plants.care.back.controller;
 
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
@@ -8,9 +9,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.plants.care.back.dto.florist.BaseFloristDTO;
 import ru.plants.care.back.dto.florist.FloristDTO;
+import ru.plants.care.back.dto.florist.FloristTaskDTO;
 import ru.plants.care.back.dto.plant.PlantListRecordDTO;
 import ru.plants.care.back.services.FloristService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,7 +26,7 @@ public class FloristController {
 
     @Operation(summary = "Запись данных флориста")
     @PostMapping(path = "/florist", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public BaseFloristDTO saveFlorist(
+    public FloristDTO saveFlorist(
             @RequestBody BaseFloristDTO florist
     ) {
         return service.saveFlorist(florist);
@@ -72,4 +75,20 @@ public class FloristController {
     public FloristDTO getFlorist(@PathVariable Long floristId){
         return service.getFlorist(floristId);
     }
+
+    @Operation(summary = "Получение списка задач на конкретную дату")
+    @GetMapping(path = "/florist/{floristId}/task/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<FloristTaskDTO> getTaskList(
+            @PathVariable Long floristId,
+            @PathVariable LocalDate date
+    ) {
+        return service.getFloristTasksAtDate(floristId, date);
+    }
+
+    @Operation(summary = "Получение флориста по email")
+    @GetMapping(path = "/florist/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public FloristDTO getFloristByEmail(@PathVariable String email){
+        return service.getFloristByEmail(email);
+    }
+
 }

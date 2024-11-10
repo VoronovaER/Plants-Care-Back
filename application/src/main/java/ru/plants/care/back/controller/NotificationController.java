@@ -20,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @RequestMapping("/api/v1/notifications")
-@SecurityRequirement(name = "basicAuth")
 @Schema(name = "Уведомления", description = "Работа с данными уведомлений")
 public class NotificationController {
     private final NotificationService service;

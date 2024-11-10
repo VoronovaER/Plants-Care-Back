@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
-@SuperBuilder
+//@SuperBuilder
 @NoArgsConstructor
 public class BaseTaskDTO {
     private LocalDateTime createdAt;

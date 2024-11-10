@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @RequestMapping("/api/v1/task")
-@SecurityRequirement(name = "basicAuth")
 @Schema(name = "Задачи", description = "Работа с данными задач")
 public class TaskController {
     private final TaskService taskService;

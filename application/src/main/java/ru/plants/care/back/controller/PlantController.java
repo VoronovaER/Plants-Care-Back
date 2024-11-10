@@ -2,6 +2,7 @@ package ru.plants.care.back.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -11,6 +12,7 @@ import ru.plants.care.back.dto.plant.BasePlantDTO;
 import ru.plants.care.back.dto.plant.NewPlantRequestDTO;
 import ru.plants.care.back.dto.plant.PlantDTO;
 import ru.plants.care.back.dto.plant.PlantListRecordDTO;
+import ru.plants.care.back.dto.task.TaskListRecordDTO;
 import ru.plants.care.back.services.PlantService;
 
 import java.util.List;
@@ -60,5 +62,13 @@ public class PlantController {
             @PathVariable Long id
     ) {
         service.deletePlant(id);
+    }
+
+    @Operation(summary = "Получение списка заданий")
+    @GetMapping(path = "/item/{id}/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TaskListRecordDTO> getPlantTasks(
+            @PathVariable Long id
+    ) {
+        return service.getTaskList(id);
     }
 }
