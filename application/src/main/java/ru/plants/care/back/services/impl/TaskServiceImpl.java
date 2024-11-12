@@ -28,6 +28,7 @@ public class TaskServiceImpl implements TaskService {
         }
         var taskEntity = taskMapper.newTaskDTOtoTaskEntity(taskDTO);
         taskEntity.setPlant(plantEntity.get());
+        taskEntity.setNextRun(taskEntity.getStartDate());
         return taskMapper.taskEntityToTaskDTO(taskRepository.save(taskEntity));
     }
 

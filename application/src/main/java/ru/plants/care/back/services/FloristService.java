@@ -18,4 +18,5 @@ public interface FloristService{
     List<FloristTaskDTO> getFloristTasksAtDate(Long id, LocalDate date);
     List<FloristTaskDTO> getFloristTasks(Long id);
     FloristDTO getFloristByEmail(String email);
+    void setFirebaseToken(String firebaseToken, String email);
 }

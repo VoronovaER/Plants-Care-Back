@@ -2,7 +2,6 @@ package ru.plants.care.back.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.plants.care.back.dto.planttype.BasePlantTypeDTO;
 import ru.plants.care.back.dto.planttype.PlantTypeDTO;
 import ru.plants.care.back.dto.planttype.PlantTypeListRecordDTO;
 import ru.plants.care.back.exception.ItemNotFoundException;
@@ -21,6 +20,11 @@ public class PlantTypeServiceImpl implements PlantTypeService {
     @Override
     public List<PlantTypeListRecordDTO> getPlantTypeList() {
         return plantTypeMapper.plantTypeEntityToPlantTypeListRecordDTO(plantTypeRepository.findAll());
+    }
+
+    @Override
+    public List<PlantTypeListRecordDTO> getPlantTypeListByName(String name) {
+        return plantTypeMapper.plantTypeEntityToPlantTypeListRecordDTO(plantTypeRepository.findByNameContainingIgnoreCase(name));
     }
 
     @Override

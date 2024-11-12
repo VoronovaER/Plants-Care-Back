@@ -30,15 +30,15 @@ public class PlantEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private PlantTypeEntity plantType;
 
     private String name;
     private String place;
     private String imageUrl;
 
-    @ManyToMany(mappedBy = "plants")
+    @ManyToMany(mappedBy = "plants", fetch = FetchType.EAGER)
     private List<FloristEntity> florists = new LinkedList<>();
-    @OneToMany(mappedBy = "plant")
+    @OneToMany(mappedBy = "plant", fetch = FetchType.EAGER)
     private List<TaskEntity> tasks = new LinkedList<>();
 }

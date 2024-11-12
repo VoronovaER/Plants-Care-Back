@@ -19,7 +19,7 @@ public class TaskRunEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private TaskEntity task;
 
     @Builder.Default

@@ -167,4 +167,11 @@ public class FloristServiceImpl implements FloristService {
         }
         return mapper.floristEntityToFloristDto(florist);
     }
+
+    @Override
+    public void setFirebaseToken(String firebaseToken, String email) {
+        var florist = floristRepository.findByEmail(email);
+        florist.setFirebaseToken(firebaseToken);
+        floristRepository.save(florist);
+    }
 }

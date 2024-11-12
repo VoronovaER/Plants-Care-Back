@@ -16,8 +16,11 @@ spring:
         format_sql: true
         generate_statistics: false
     generate-ddl: true
+    boot:
+      allow_jdbc_metadata_access: false
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres?currentSchema=plants_care_back}
+    url: ${DB_URL:jdbc:postgresql://db:5432/postgres?currentSchema=plants_care_back}
+#    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres?currentSchema=plants_care_back}
     hikari:
       username: ${DB_USER:postgres}
       password: ${DB_PASS:ada5cpp}
@@ -25,3 +28,6 @@ spring:
     serialization:
       write_dates_as_timestamps: false
 
+plants-care:
+  firebase:
+    service-account: classpath:firebase-service-account.json

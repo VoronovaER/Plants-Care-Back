@@ -3,8 +3,11 @@ package ru.plants.care.back.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.plants.care.back.dto.florist.BaseFloristDTO;
@@ -90,5 +93,11 @@ public class FloristController {
     public FloristDTO getFloristByEmail(@PathVariable String email){
         return service.getFloristByEmail(email);
     }
-
+    @Operation(summary = "Установка токена Firebase")
+    @PutMapping(path = "/florist/{email}/firebase/{firebaseToken}")
+    public void updateFloristFirebaseToken(
+            @PathVariable String firebaseToken, @PathVariable String email
+    ){
+            service.setFirebaseToken(firebaseToken, email);
+    }
 }

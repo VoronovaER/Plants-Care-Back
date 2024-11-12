@@ -3,10 +3,12 @@ package ru.plants.care.back.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import ru.plants.care.back.dto.notification.TaskRunDTO;
 import ru.plants.care.back.dto.task.NewTaskDTO;
 import ru.plants.care.back.dto.task.TaskDTO;
 import ru.plants.care.back.dto.task.TaskListRecordDTO;
 import ru.plants.care.back.repository.model.TaskEntity;
+import ru.plants.care.back.repository.model.TaskRunEntity;
 
 import java.util.List;
 
@@ -22,4 +24,5 @@ public interface TaskMapper {
     @Mapping(source = "taskEntity.plant.name", target = "plantName")
     @Mapping(source = "taskEntity.plant.plantType", target = "plantTypeName")
     TaskListRecordDTO taskEntityToTaskListRecordDTO(TaskEntity taskEntity);
+    TaskRunDTO taskRunEntityToTaskRunDTO(TaskRunEntity taskRunEntity);
 }

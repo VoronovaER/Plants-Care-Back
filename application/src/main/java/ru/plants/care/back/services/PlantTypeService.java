@@ -10,6 +10,9 @@ import java.util.List;
 
 public interface PlantTypeService {
     List<PlantTypeListRecordDTO> getPlantTypeList();
+
+    List<PlantTypeListRecordDTO> getPlantTypeListByName(String name);
+
     PlantTypeDTO savePlantType(PlantTypeDTO plantType);
     void deletePlantType(Long id);
     PlantTypeDTO updatePlantType(Long id, PlantTypeDTO plant);

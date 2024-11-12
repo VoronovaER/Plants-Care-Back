@@ -22,7 +22,7 @@ public class FloristEntity {
     private String name;
     private String avatar;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "florist_plants",
             joinColumns = { @JoinColumn(name = "florist_id") },
@@ -33,4 +33,5 @@ public class FloristEntity {
     @Column(unique = true)
     private String email;
     private String password;
+    private String firebaseToken;
 }

@@ -2,16 +2,19 @@ package ru.plants.care.back.job;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.plants.care.back.dto.task.TaskRunStatus;
-import ru.plants.care.back.repository.NotificationRepository;
 import ru.plants.care.back.repository.TaskRepository;
 import ru.plants.care.back.repository.TaskRunRepository;
-import ru.plants.care.back.repository.model.FloristEntity;
-import ru.plants.care.back.repository.model.NotificationEntity;
+import ru.plants.care.back.repository.model.TaskEntity;
 import ru.plants.care.back.repository.model.TaskRunEntity;
+import ru.plants.care.back.task.FeedingTask;
+import ru.plants.care.back.task.PollingTask;
+import ru.plants.care.back.task.Task;
+import ru.plants.care.back.task.WateringTask;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
@@ -21,9 +24,9 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 @Transactional
 public class TaskRunner {
+    private final ApplicationContext context;
     private final TaskRepository taskRepository;
     private final TaskRunRepository taskRunRepository;
-    private final NotificationRepository notificationRepository;
 
     @Scheduled(fixedRate = 1000)
     public void planTasksRun() {
@@ -65,15 +68,12 @@ public class TaskRunner {
         for (var taskRun : taskRunList) {
             setTaskRunStatus(taskRun, TaskRunStatus.RUNNING);
 
-            CompletableFuture.runAsync(() -> {
-                        sendNotification(taskRun);
-                    })
+            CompletableFuture.runAsync(() -> getTask(taskRun.getTask()).execute(taskRun))
                     .whenComplete((result, ex) -> {
                         if (ex != null) {
                             taskRun.setStatusDescription(ex.getClass().getSimpleName() + ": " + ex.getMessage());
                             setTaskRunStatus(taskRun, TaskRunStatus.FAILED);
-                        }
-                        else {
+                        } else {
                             setTaskRunStatus(taskRun, TaskRunStatus.SUCCESS);
                         }
                     });
@@ -86,16 +86,11 @@ public class TaskRunner {
         taskRunRepository.save(taskRun);
     }
 
-    void sendNotification(TaskRunEntity taskRun) {
-        var task = taskRun.getTask();
-        if (Boolean.TRUE.equals(taskRun.getTask().getSendNotification())) {
-            for (FloristEntity florist : task.getPlant().getFlorists()) {
-                var notification = NotificationEntity.builder()
-                        .taskRun(taskRun)
-                        .florist(florist)
-                        .build();
-                notificationRepository.save(notification);
-            }
-        }
+    private Task getTask(TaskEntity task) {
+        return switch (task.getType()) {
+            case PLANT_WATERING -> context.getBean(WateringTask.class);
+            case PLANT_FEEDING -> context.getBean(FeedingTask.class);
+            case PLANT_POLLING -> context.getBean(PollingTask.class);
+        };
     }
 }

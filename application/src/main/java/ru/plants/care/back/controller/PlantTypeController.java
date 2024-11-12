@@ -3,6 +3,7 @@ package ru.plants.care.back.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,15 @@ import java.util.List;
 @Schema(name = "Растения", description = "Работа с данными растений")
 public class PlantTypeController {
     private final PlantTypeService plantTypeService;
+
+
+    @Operation(summary = "Получение списка типов растений по части имени")
+    @GetMapping(path = "/types/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<PlantTypeListRecordDTO> getPlantTypeListByName(
+            @PathVariable @NotEmpty String name
+    ) {
+        return plantTypeService.getPlantTypeListByName(name);
+    }
 
     @Operation(summary = "Получение списка типов растений")
     @GetMapping(path = "/types", produces = MediaType.APPLICATION_JSON_VALUE)

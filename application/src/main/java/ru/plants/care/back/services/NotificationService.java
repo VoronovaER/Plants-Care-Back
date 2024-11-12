@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface NotificationService {
-    NotificationDTO saveNotification(NotificationDTO notification);
+    NotificationDTO sendNotification(NotificationDTO notification);
     NotificationDTO getNotification(Long id);
     List<NotificationsListRecordDTO> getNotificationList(Long floristId, LocalDateTime startDateTime, LocalDateTime endDateTime);
     void deleteNotification(Long id);
