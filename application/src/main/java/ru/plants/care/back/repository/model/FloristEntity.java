@@ -34,4 +34,5 @@ public class FloristEntity {
     private String email;
     private String password;
     private String firebaseToken;
+    private Boolean Admin;
 }

@@ -9,6 +9,7 @@ import ru.plants.care.back.dto.plant.NewPlantRequestDTO;
 import ru.plants.care.back.dto.plant.PlantDTO;
 import ru.plants.care.back.dto.plant.PlantListRecordDTO;
 import ru.plants.care.back.dto.task.TaskListRecordDTO;
+import ru.plants.care.back.exception.DuplicateKeyException;
 import ru.plants.care.back.exception.ItemNotFoundException;
 import ru.plants.care.back.mapper.PlantMapper;
 import ru.plants.care.back.mapper.TaskMapper;
@@ -48,7 +49,9 @@ public class PlantServiceImpl implements PlantService {
         if (plantTypeEntity.isEmpty()) {
             throw new ItemNotFoundException("Plant type not found: " + plant.getPlantTypeId());
         }
-
+        if (floristEntityOpt.get().getPlants().stream().anyMatch(p -> p.getPlantType().equals(plant.getName()))){
+            throw new DuplicateKeyException("Plant already exists: " + plant.getName());
+        }
         var plantEntity = mapper.newPlantDTOToListPlantEntity(plant);
         plantEntity.setPlantType(plantTypeEntity.get());
         plantEntity = repository.saveAndFlush(plantEntity);
@@ -69,6 +72,10 @@ public class PlantServiceImpl implements PlantService {
         var plantEntity = repository.findById(id);
         if (plantEntity.isEmpty()) {
             throw new ItemNotFoundException("Plant not found: " + id);
+        }
+        var floristEntityOpt = floristRepository.findById(plantEntity.get().getFlorists().get(0).getId());
+        if (floristEntityOpt.get().getPlants().stream().anyMatch(p -> p.getPlantType().equals(plant.getName()))){
+            throw new DuplicateKeyException("Plant already exists: " + plant.getName());
         }
         plantEntity.get().setFlorists(plantEntity.get().getFlorists());
 

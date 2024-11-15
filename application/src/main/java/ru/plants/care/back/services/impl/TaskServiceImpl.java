@@ -7,11 +7,14 @@ import ru.plants.care.back.dto.task.TaskDTO;
 import ru.plants.care.back.dto.task.TaskListRecordDTO;
 import ru.plants.care.back.exception.ItemNotFoundException;
 import ru.plants.care.back.mapper.TaskMapper;
+import ru.plants.care.back.repository.FloristRepository;
 import ru.plants.care.back.repository.PlantRepository;
 import ru.plants.care.back.repository.TaskRepository;
 import ru.plants.care.back.services.TaskService;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,15 +22,13 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
     private final PlantRepository plantRepository;
+    private  final FloristRepository floristRepository;
 
     @Override
-    public TaskDTO createTask(NewTaskDTO taskDTO) {
-        var plantEntity = plantRepository.findById(taskDTO.getPlantId());
-        if (plantEntity.isEmpty()) {
-            throw new ItemNotFoundException("Plant not found" + taskDTO.getPlantId());
-        }
+    public TaskDTO createTask(Long floristId, NewTaskDTO taskDTO) {
+        var plantEntity = floristRepository.findById(floristId).get().getPlants().stream().filter(plant -> Objects.equals(plant.getName(), taskDTO.getPlantName())).collect(Collectors.toUnmodifiableList()).get(0);
         var taskEntity = taskMapper.newTaskDTOtoTaskEntity(taskDTO);
-        taskEntity.setPlant(plantEntity.get());
+        taskEntity.setPlant(plantEntity);
         taskEntity.setNextRun(taskEntity.getStartDate());
         return taskMapper.taskEntityToTaskDTO(taskRepository.save(taskEntity));
     }

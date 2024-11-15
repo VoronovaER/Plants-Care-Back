@@ -7,7 +7,7 @@ import ru.plants.care.back.dto.task.TaskListRecordDTO;
 import java.util.List;
 
 public interface TaskService {
-    TaskDTO createTask(NewTaskDTO taskDTO);
+    TaskDTO createTask(Long floristId, NewTaskDTO taskDTO);
     List<TaskListRecordDTO> getTaskList();
     TaskDTO getTask(Long id);
     TaskDTO changeTaskStatus(Long id);

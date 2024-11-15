@@ -23,11 +23,12 @@ public class TaskController {
     private final TaskService taskService;
 
     @Operation(summary = "Добавление задачи")
-    @PostMapping(path = "/add/{plantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/add/{floristId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public TaskDTO createTask(
-            @RequestBody NewTaskDTO taskDTO
+            @RequestBody NewTaskDTO taskDTO,
+            @PathVariable Long floristId
     ) {
-        return taskService.createTask(taskDTO);
+        return taskService.createTask(floristId, taskDTO);
     }
 
     @Operation(summary  =  "Список задач")

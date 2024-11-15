@@ -1,5 +1,8 @@
 package ru.plants.care.back.services.impl;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.plants.care.back.dto.florist.BaseFloristDTO;
@@ -18,8 +21,7 @@ import ru.plants.care.back.services.FloristService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -173,5 +175,16 @@ public class FloristServiceImpl implements FloristService {
         var florist = floristRepository.findByEmail(email);
         florist.setFirebaseToken(firebaseToken);
         floristRepository.save(florist);
+    }
+
+    public void setUserRole(String uid) throws FirebaseAuthException {
+        UserRecord user = FirebaseAuth.getInstance().getUser(uid);
+        Map<String, Object> claims = new HashMap<>();
+        if (Objects.equals(user.getEmail(), "secret_admin_cat_user@gmail.com")){
+            claims.put("role", "admin");
+        }else{
+            claims.put("role", "user");
+        }
+        FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
     }
 }

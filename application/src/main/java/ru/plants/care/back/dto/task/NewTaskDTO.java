@@ -25,7 +25,7 @@ public class NewTaskDTO {
     @NotEmpty
     private String description;
     @NotNull
-    private Long plantId;
+    private String plantName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     @NotNull
