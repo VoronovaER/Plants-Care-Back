@@ -11,4 +11,6 @@ public interface TaskService {
     List<TaskListRecordDTO> getTaskList();
     TaskDTO getTask(Long id);
     TaskDTO changeTaskStatus(Long id);
+
+    void deleteTask(Long id);
 }

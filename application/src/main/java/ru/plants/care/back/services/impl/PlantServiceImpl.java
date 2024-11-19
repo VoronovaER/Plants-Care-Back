@@ -16,7 +16,9 @@ import ru.plants.care.back.mapper.TaskMapper;
 import ru.plants.care.back.repository.FloristRepository;
 import ru.plants.care.back.repository.PlantRepository;
 import ru.plants.care.back.repository.PlantTypeRepository;
+import ru.plants.care.back.repository.TaskRepository;
 import ru.plants.care.back.repository.model.FloristEntity;
+import ru.plants.care.back.repository.model.TaskEntity;
 import ru.plants.care.back.services.PlantService;
 
 import java.util.List;
@@ -29,6 +31,7 @@ public class PlantServiceImpl implements PlantService {
     private final FloristRepository floristRepository;
     private final PlantTypeRepository plantTypeRepository;
     private final PlantRepository plantRepository;
+    private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
     @Override
@@ -102,6 +105,10 @@ public class PlantServiceImpl implements PlantService {
             List<FloristEntity> florists = plantEntity.get().getFlorists();
             for (FloristEntity florist : florists) {
                 florist.getPlants().remove(plantEntity.get());
+            }
+            List<TaskEntity> tasks = plantEntity.get().getTasks();
+            for (TaskEntity task : tasks) {
+                taskRepository.deleteById(task.getId());
             }
             repository.deleteById(id);
         }

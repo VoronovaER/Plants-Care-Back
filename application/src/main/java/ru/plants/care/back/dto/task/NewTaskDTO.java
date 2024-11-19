@@ -30,4 +30,5 @@ public class NewTaskDTO {
     private LocalDateTime endDate;
     @NotNull
     private TaskPeriod period;
+    private Boolean sendNotification;
 }

@@ -67,7 +67,6 @@ public class TaskRunner {
         var taskRunList = taskRunRepository.findAllByStatus(TaskRunStatus.WAITING);
         for (var taskRun : taskRunList) {
             setTaskRunStatus(taskRun, TaskRunStatus.RUNNING);
-
             CompletableFuture.runAsync(() -> getTask(taskRun.getTask()).execute(taskRun))
                     .whenComplete((result, ex) -> {
                         if (ex != null) {

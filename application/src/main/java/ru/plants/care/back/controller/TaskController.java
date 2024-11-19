@@ -48,4 +48,10 @@ public class TaskController {
     public TaskDTO changeTaskStatus(@PathVariable Long taskId){
         return taskService.changeTaskStatus(taskId);
     }
+
+    @Operation(summary = "Удаление задачи")
+    @DeleteMapping(path  =  "/{taskId}")
+    public void deleteTask(@PathVariable Long taskId){
+        taskService.deleteTask(taskId);
+    }
 }

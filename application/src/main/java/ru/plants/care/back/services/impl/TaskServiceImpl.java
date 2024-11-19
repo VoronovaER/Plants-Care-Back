@@ -56,4 +56,10 @@ public class TaskServiceImpl implements TaskService {
         taskEntity.get().setEnabled(!taskEntity.get().getEnabled());
         return taskMapper.taskEntityToTaskDTO(taskRepository.save(taskEntity.get()));
     }
+
+    @Override
+    public void deleteTask(Long id) {
+        
+        taskRepository.deleteById(id);
+    }
 }
