@@ -13,12 +13,10 @@ import ru.plants.care.back.exception.DuplicateKeyException;
 import ru.plants.care.back.exception.ItemNotFoundException;
 import ru.plants.care.back.mapper.PlantMapper;
 import ru.plants.care.back.mapper.TaskMapper;
-import ru.plants.care.back.repository.FloristRepository;
-import ru.plants.care.back.repository.PlantRepository;
-import ru.plants.care.back.repository.PlantTypeRepository;
-import ru.plants.care.back.repository.TaskRepository;
+import ru.plants.care.back.repository.*;
 import ru.plants.care.back.repository.model.FloristEntity;
 import ru.plants.care.back.repository.model.TaskEntity;
+import ru.plants.care.back.repository.model.TaskRunEntity;
 import ru.plants.care.back.services.PlantService;
 
 import java.util.List;
@@ -32,6 +30,7 @@ public class PlantServiceImpl implements PlantService {
     private final PlantTypeRepository plantTypeRepository;
     private final PlantRepository plantRepository;
     private final TaskRepository taskRepository;
+    private final TaskRunRepository taskRunRepository;
     private final TaskMapper taskMapper;
 
     @Override
@@ -81,6 +80,7 @@ public class PlantServiceImpl implements PlantService {
             throw new DuplicateKeyException("Plant already exists: " + plant.getName());
         }
         plantEntity.get().setFlorists(plantEntity.get().getFlorists());
+        plantEntity.get().setDescription(plant.getDescription());
 
         mapper.updatePlantEntity(plant, plantEntity.get());
         return mapper.plantEntityToPlantDTO(plantRepository.save(plantEntity.get()));

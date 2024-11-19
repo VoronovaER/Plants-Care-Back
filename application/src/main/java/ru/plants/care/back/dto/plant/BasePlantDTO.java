@@ -22,4 +22,5 @@ public class BasePlantDTO {
     @NotEmpty
     private String place;
     private String url;
+    private String description;
 }

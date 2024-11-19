@@ -6,10 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import ru.plants.care.back.dto.task.TaskPeriod;
 import ru.plants.care.back.dto.task.TaskType;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SuperBuilder
 @AllArgsConstructor
@@ -44,4 +47,5 @@ public class TaskEntity {
     private Boolean enabled;
 
     private Boolean sendNotification;
+
 }
