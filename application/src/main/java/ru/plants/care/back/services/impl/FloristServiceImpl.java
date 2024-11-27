@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 import ru.plants.care.back.dto.florist.BaseFloristDTO;
 import ru.plants.care.back.dto.florist.FloristDTO;
@@ -17,10 +18,13 @@ import ru.plants.care.back.mapper.PlantMapper;
 import ru.plants.care.back.mapper.TaskMapper;
 import ru.plants.care.back.repository.FloristRepository;
 import ru.plants.care.back.repository.PlantRepository;
+import ru.plants.care.back.repository.TaskRunRepository;
+import ru.plants.care.back.repository.model.TaskRunEntity;
 import ru.plants.care.back.services.FloristService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,6 +37,7 @@ public class FloristServiceImpl implements FloristService {
     private final FloristMapper mapper;
     private final PlantMapper plantMapper;
     private final TaskMapper taskMapper;
+    private final TaskRunRepository taskRunRepository;
 
     @Override
     public FloristDTO saveFlorist(BaseFloristDTO florist) {
@@ -115,36 +120,55 @@ public class FloristServiceImpl implements FloristService {
                 .map(tasks ->
                         tasks.stream()
                                 .flatMap(task -> {
-                                    LocalDateTime calcDateTime;
-                                    if (task.getNextRun() != null &&
-                                            task.getNextRun().toLocalDate().atStartOfDay().toLocalDate().isBefore(date)) {
-                                        calcDateTime = task.getNextRun();
+                                    if (date.isBefore(LocalDate.now())) {
+                                        return taskRunRepository.findAllByTaskAndStartAtBetween(task, date.atStartOfDay(), date.atTime(LocalTime.of(23, 59, 59, 9999)))
+                                                .stream()
+                                                .map(taskRun -> FloristTaskDTO.builder().
+                                                        runDateTime(taskRun.getStartAt())
+                                                        .task(taskMapper.taskEntityToTaskListRecordDTO(task))
+                                                        .taskRun(taskMapper.toTaskRunDTO(taskRun))
+                                                        .build());
                                     } else {
-                                        calcDateTime = task.getStartDate();
+                                        LocalDateTime calcDateTime = task.getNextRun() != null && date.isAfter(task.getNextRun().toLocalDate().minusDays(1)) ?
+                                                task.getNextRun() :
+                                                task.getStartDate();
+                                        calcDateTime = LocalDateTime.of(date, LocalTime.of(0,
+                                                calcDateTime.toLocalTime().getMinute(),
+                                                calcDateTime.toLocalTime().getSecond(),
+                                                calcDateTime.toLocalTime().getNano()
+                                        ));
+
+                                        return Stream.concat(
+                                                        date.equals(LocalDate.now()) ?
+                                                                taskRunRepository.findAllByTaskAndStartAtBetween(task, date.atStartOfDay(), LocalDateTime.now())
+                                                                        .stream()
+                                                                        .map(taskRun -> Pair.of(taskRun.getStartAt(), taskRun)) :
+                                                                Stream.empty(),
+                                                        Stream.iterate(calcDateTime,
+                                                                        curDateTime -> curDateTime.toLocalDate().isBefore(date.plusDays(1)),
+                                                                        runDateTime -> switch (task.getPeriod()) {
+                                                                            case HOURLY -> runDateTime.plusHours(1);
+                                                                            case DAILY -> runDateTime.plusDays(1);
+                                                                            case WEEKLY -> runDateTime.plusWeeks(1);
+                                                                            case MONTHLY -> runDateTime.plusMonths(1);
+                                                                            case YEARLY -> runDateTime.plusYears(1);
+                                                                        }
+                                                                )
+                                                                .filter(runDateTime -> runDateTime.isAfter(LocalDateTime.now()))
+                                                                .map(runDateTime -> Pair.<LocalDateTime, TaskRunEntity>of(runDateTime, null))
+                                                )
+                                                .filter(runData -> runData.getLeft().toLocalDate().equals(date))
+                                                .map(runData -> FloristTaskDTO.builder()
+                                                        .runDateTime(runData.getLeft())
+                                                        .task(taskMapper.taskEntityToTaskListRecordDTO(task))
+                                                        .taskRun(taskMapper.toTaskRunDTO(runData.getRight()))
+                                                        .build());
                                     }
-
-                                    if (task.getPeriod() == TaskPeriod.HOURLY) {
-                                        calcDateTime = calcDateTime.toLocalDate().atStartOfDay();
-                                    }
-
-                                    return Stream.iterate(calcDateTime,
-                                                    curDateTime -> curDateTime.toLocalDate().isBefore(date.plusDays(1)),
-                                                    runDateTime -> switch (task.getPeriod()) {
-                                                        case HOURLY -> runDateTime.plusHours(1);
-                                                        case DAILY -> runDateTime.plusDays(1);
-                                                        case WEEKLY -> runDateTime.plusWeeks(1);
-                                                        case MONTHLY -> runDateTime.plusMonths(1);
-                                                        case YEARLY -> runDateTime.plusYears(1);
-                                                    }
-                                            )
-                                            .filter(runDateTime -> runDateTime.toLocalDate().equals(date))
-                                            .map(runDateTime -> new FloristTaskDTO(runDateTime, taskMapper.taskEntityToTaskListRecordDTO(task)));
-
                                 })
                                 .collect(Collectors.toList())
                 )
                 .map(taskRunList -> taskRunList.stream()
-                        .sorted(Comparator.comparing(FloristTaskDTO::localDateTime))
+                        .sorted(Comparator.comparing(FloristTaskDTO::runDateTime))
                         .collect(Collectors.toList()))
                 .orElse(List.of());
     }

@@ -21,7 +21,7 @@ public abstract class BasicTask implements Task {
         if (Boolean.TRUE.equals(taskRun.getTask().getSendNotification())) {
             for (FloristEntity florist : task.getPlant().getFlorists()) {
                 var notification = NotificationDTO.builder()
-                        .taskRun(taskMapper.taskRunEntityToTaskRunDTO(taskRun))
+                        .taskRun(taskMapper.taskRunEntityToNotificationTaskRunDTO(taskRun))
                         .florist(floristMapper.floristEntityToFloristDto(florist))
                         .build();
                 notificationService.sendNotification(notification);

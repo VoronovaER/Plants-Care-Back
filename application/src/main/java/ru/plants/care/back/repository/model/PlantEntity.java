@@ -30,7 +30,7 @@ public class PlantEntity {
 
     private String name;
     private String place;
-    private String imageUrl;
+    private String url;
     private String description;
 
     @ManyToMany(mappedBy = "plants", fetch = FetchType.EAGER)

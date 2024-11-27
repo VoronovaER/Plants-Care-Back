@@ -12,6 +12,10 @@ import java.time.LocalDateTime;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
-public record NotificationDTO(Long id, LocalDateTime createdAt, FloristDTO florist, TaskRunDTO taskRun,
-                              LocalDateTime delivered, LocalDateTime read) {
+public record NotificationDTO(Long id,
+                              LocalDateTime createdAt,
+                              FloristDTO florist,
+                              NotificationTaskRunDTO taskRun,
+                              LocalDateTime delivered,
+                              LocalDateTime read) {
 }

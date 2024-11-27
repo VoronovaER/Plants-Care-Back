@@ -27,6 +27,10 @@ spring:
   jackson:
     serialization:
       write_dates_as_timestamps: false
+  servlet:
+    multipart:
+      max-file-size: 6MB
+      max-request-size: 6MB
 
 plants-care:
   firebase:

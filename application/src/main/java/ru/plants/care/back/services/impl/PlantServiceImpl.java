@@ -57,6 +57,9 @@ public class PlantServiceImpl implements PlantService {
         var plantEntity = mapper.newPlantDTOToListPlantEntity(plant);
         plantEntity.setPlantType(plantTypeEntity.get());
         plantEntity = repository.saveAndFlush(plantEntity);
+        if (plantEntity.getUrl() == null){
+            plantEntity.setUrl(plantTypeEntity.get().getUrl());
+        }
 
         florist.getPlants().add(plantEntity);
 
