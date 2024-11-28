@@ -58,4 +58,5 @@ jobs:
       - name: Run Docker Compose
         run: |
           cd $PROJECT_DIR/application
+          mvn wrapper:wrapper
           sudo docker-compose down &&  sudo docker-compose up -d --build --force-recreate
