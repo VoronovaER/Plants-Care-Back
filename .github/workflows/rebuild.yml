@@ -3,10 +3,10 @@ name: ReBuild Docker Image
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 env:
   PROJECT_DIR: /home/user/docker/application
