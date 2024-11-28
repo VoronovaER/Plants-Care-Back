@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  PROJECT_DIR: /home/user/docker/application
+  PROJECT_DIR: /home/user/docker
 
 jobs:
   build:
