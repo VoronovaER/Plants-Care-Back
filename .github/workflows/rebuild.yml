@@ -23,7 +23,7 @@ jobs:
       - name: Copy files
         run: |
           cp -rf * $PROJECT_DIR
-          cd $PROJECT_DIR
+          cd $PROJECT_DIR/application
           echo "Updating files..."
     
       # Set up Docker Buildx (for multi-platform builds)
