@@ -7,5 +7,5 @@ import ru.plants.care.back.repository.model.NotificationEntity;
 import java.awt.*;
 
 public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
-    ImageEntity findByUrl(String url);
+    ImageEntity findByFileId(String fileId);
 }

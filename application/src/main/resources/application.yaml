@@ -29,9 +29,10 @@ spring:
       write_dates_as_timestamps: false
   servlet:
     multipart:
-      max-file-size: 6MB
-      max-request-size: 6MB
+      max-file-size: 1MB
+      max-request-size: 1MB
 
 plants-care:
   firebase:
     service-account: classpath:firebase-service-account.json
+  file-storage-path: ${FILE_STORAGE_PATH:/tmp/plants-care/images}

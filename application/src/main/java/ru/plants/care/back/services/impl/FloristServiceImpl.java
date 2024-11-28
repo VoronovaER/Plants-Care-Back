@@ -154,7 +154,7 @@ public class FloristServiceImpl implements FloristService {
                                                                             case YEARLY -> runDateTime.plusYears(1);
                                                                         }
                                                                 )
-                                                                .filter(runDateTime -> runDateTime.isAfter(LocalDateTime.now()))
+                                                                .filter(runDateTime -> runDateTime.isAfter(LocalDateTime.now()))//TODO test
                                                                 .map(runDateTime -> Pair.<LocalDateTime, TaskRunEntity>of(runDateTime, null))
                                                 )
                                                 .filter(runData -> runData.getLeft().toLocalDate().equals(date))

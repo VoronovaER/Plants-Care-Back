@@ -26,20 +26,20 @@ public class ImageController {
 
     @Operation(summary = "Загрузка картинки")
     @PostMapping(path = "/image/{floristId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ImageDTO uploadImage(@RequestParam("image") MultipartFile image,
+    public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile image,
                                 @PathVariable Long floristId) throws IOException {
         return imageService.uploadImage(image, floristId);
     }
 
     @Operation(summary = "Просмотр картинки")
-    @GetMapping(path = "/image", produces = MediaType.APPLICATION_JSON_VALUE)
-    public byte[] getImage(@RequestParam String url) throws IOException {
-        return imageService.getImage(url);
+    @GetMapping(path = "/image/{fileId}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String fileId) throws IOException {
+        return imageService.getImage(fileId);
     }
 
     @Operation(summary = "Удаление картинки")
     @DeleteMapping(path = "/image")
-    public String deleteImage(@RequestParam String url) throws IOException {
-        return imageService.deleteImage(url);
+    public String deleteImage(@RequestParam String fileId) throws IOException {
+        return imageService.deleteImage(fileId);
     }
 }
