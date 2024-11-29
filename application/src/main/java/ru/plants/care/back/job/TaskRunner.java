@@ -82,6 +82,7 @@ public class TaskRunner {
     public void setTaskRunStatus(TaskRunEntity taskRun, TaskRunStatus status) {
         taskRun.setEndAt(LocalDateTime.now());
         taskRun.setStatus(status);
+        taskRun.setStatusDescription("Uncompleted");
         taskRunRepository.save(taskRun);
     }
 

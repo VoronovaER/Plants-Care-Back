@@ -4,5 +4,6 @@ public enum TaskRunStatus {
     WAITING,
     RUNNING,
     SUCCESS,
-    FAILED
+    FAILED,
+    COMPLETED
 }
