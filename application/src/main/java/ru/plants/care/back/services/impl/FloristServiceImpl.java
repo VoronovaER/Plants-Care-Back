@@ -139,7 +139,7 @@ public class FloristServiceImpl implements FloristService {
                                                     calcDateTime.toLocalTime().getNano()
                                             ));
                                         }else{
-                                            calcDateTime = LocalDateTime.of(date, LocalTime.of(calcDateTime.getHour(),
+                                            calcDateTime = LocalDateTime.of(calcDateTime.toLocalDate(), LocalTime.of(calcDateTime.getHour(),
                                                     calcDateTime.toLocalTime().getMinute(),
                                                     calcDateTime.toLocalTime().getSecond(),
                                                     calcDateTime.toLocalTime().getNano()
