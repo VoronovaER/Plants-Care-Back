@@ -132,11 +132,19 @@ public class FloristServiceImpl implements FloristService {
                                         LocalDateTime calcDateTime = task.getNextRun() != null && date.isAfter(task.getNextRun().toLocalDate().minusDays(1)) ?
                                                 task.getNextRun() :
                                                 task.getStartDate();
-                                        calcDateTime = LocalDateTime.of(date, LocalTime.of(0,
-                                                calcDateTime.toLocalTime().getMinute(),
-                                                calcDateTime.toLocalTime().getSecond(),
-                                                calcDateTime.toLocalTime().getNano()
-                                        ));
+                                        if(task.getPeriod() == TaskPeriod.HOURLY){
+                                            calcDateTime = LocalDateTime.of(date, LocalTime.of(0,
+                                                    calcDateTime.toLocalTime().getMinute(),
+                                                    calcDateTime.toLocalTime().getSecond(),
+                                                    calcDateTime.toLocalTime().getNano()
+                                            ));
+                                        }else{
+                                            calcDateTime = LocalDateTime.of(date, LocalTime.of(calcDateTime.getHour(),
+                                                    calcDateTime.toLocalTime().getMinute(),
+                                                    calcDateTime.toLocalTime().getSecond(),
+                                                    calcDateTime.toLocalTime().getNano()
+                                            ));
+                                        }
 
                                         return Stream.concat(
                                                         date.equals(LocalDate.now()) ?
@@ -157,7 +165,7 @@ public class FloristServiceImpl implements FloristService {
                                                                 .filter(runDateTime -> runDateTime.isAfter(LocalDateTime.now()))//TODO test
                                                                 .map(runDateTime -> Pair.<LocalDateTime, TaskRunEntity>of(runDateTime, null))
                                                 )
-                                                .filter(runData -> runData.getLeft().toLocalDate().equals(date))
+                                                .filter(runData -> (runData.getLeft().toLocalDate().equals(date) && runData.getLeft().isBefore(task.getEndDate().plusMinutes(1)) && runData.getLeft().isAfter(task.getStartDate().minusMinutes(1))))
                                                 .map(runData -> FloristTaskDTO.builder()
                                                         .runDateTime(runData.getLeft())
                                                         .task(taskMapper.taskEntityToTaskListRecordDTO(task))

@@ -10,6 +10,9 @@ import ru.plants.care.back.mapper.TaskMapper;
 import ru.plants.care.back.repository.FloristRepository;
 import ru.plants.care.back.repository.PlantRepository;
 import ru.plants.care.back.repository.TaskRepository;
+import ru.plants.care.back.repository.TaskRunRepository;
+import ru.plants.care.back.repository.model.PlantEntity;
+import ru.plants.care.back.repository.model.TaskEntity;
 import ru.plants.care.back.services.TaskService;
 
 import java.util.List;
@@ -23,6 +26,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskMapper taskMapper;
     private final PlantRepository plantRepository;
     private  final FloristRepository floristRepository;
+    private final TaskRunRepository taskRunRepository;
 
     @Override
     public TaskDTO createTask(Long floristId, NewTaskDTO taskDTO) {
@@ -59,7 +63,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteTask(Long id) {
-        
+        var task = taskRepository.findById(id);
+        if (task.isEmpty()){
+            throw new ItemNotFoundException("Task not found" + id);
+        }
         taskRepository.deleteById(id);
     }
 }

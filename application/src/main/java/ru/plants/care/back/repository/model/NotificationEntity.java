@@ -2,6 +2,7 @@ package ru.plants.care.back.repository.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +20,11 @@ public class NotificationEntity {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "florist_id")
     private FloristEntity florist;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "task_run_id")
     private TaskRunEntity taskRun;
 
     private LocalDateTime delivered;

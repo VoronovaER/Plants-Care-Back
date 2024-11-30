@@ -34,6 +34,7 @@ public class PlantEntity {
     private String description;
 
     @ManyToMany(mappedBy = "plants", fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private List<FloristEntity> florists = new LinkedList<>();
     @OneToMany(mappedBy = "plant", fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)

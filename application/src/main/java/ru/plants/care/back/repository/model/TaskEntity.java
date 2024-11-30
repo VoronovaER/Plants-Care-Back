@@ -35,6 +35,7 @@ public class TaskEntity {
     private String description;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "plant_id")
     private PlantEntity plant;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -47,5 +48,8 @@ public class TaskEntity {
     private Boolean enabled;
 
     private Boolean sendNotification;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "task")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<TaskRunEntity> taskRunEntities;
 
 }
